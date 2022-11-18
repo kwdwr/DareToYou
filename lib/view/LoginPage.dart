@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextField(
                         controller: _passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: InputBorder.none, hintText: 'Şifre'
                         ),
                       ),
@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                 InkWell(splashColor: Colors.red,
                   onTap: () async {
                   await  _authService.signInEmailAndPassword(email: _emailController.text, password: _passwordController.text);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
                   },
                   // padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
