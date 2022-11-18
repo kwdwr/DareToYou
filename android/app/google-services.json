@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "392187124440",
+    "project_id": "daretoyoufirebase",
+    "storage_bucket": "daretoyoufirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392187124440:android:3a5115c3c6f992e7fa95ad",
+        "android_client_info": {
+          "package_name": "com.example.daretoyouapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392187124440-snvfok9er7ptk9gliqlgm4911n1krpqr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7vuAI9Tr1HZqTMLzC0dvOcua_23P9cPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392187124440-snvfok9er7ptk9gliqlgm4911n1krpqr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
