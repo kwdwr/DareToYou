@@ -1,13 +1,8 @@
-import 'package:daretoyouapp/view/LoginPage.dart';
-import 'package:daretoyouapp/view/Uygulamaiciekran.dart';
+import 'package:daretoyouapp/view/loginpage.dart';
 import 'package:daretoyouapp/core/service/i_auth_service.dart';
-import 'package:daretoyouapp/view/SignupPage.dart';
-import 'package:daretoyouapp/view/Uygulamaiciekran.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../firebase_options.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -17,9 +12,7 @@ class SignUpPage extends StatefulWidget {
 
   @override
   State<SignUpPage> createState() => SignUpPageState();
-
 }
-
 
 class SignUpPageState extends State<SignUpPage> {
   final formKey = GlobalKey<FormState>();
@@ -28,13 +21,14 @@ class SignUpPageState extends State<SignUpPage> {
   final TextEditingController _password2Controller = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _surNameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  late final String phoneController;
   bool? check1 = false;
   @override
   Widget build(BuildContext context) {
-    final _authService = Provider.of<IAuthService>(context,listen:false);
+    final authService = Provider.of<IAuthService>(context, listen: false);
 
-    return Scaffold( backgroundColor: Colors.grey[300],
+    return Scaffold(
+      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Center(
           child: Form(
@@ -43,8 +37,13 @@ class SignUpPageState extends State<SignUpPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.flutter_dash,size: 50,),
-                  const SizedBox(height: 15,),
+                  const Icon(
+                    Icons.flutter_dash,
+                    size: 50,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   Text(
                     'Dare To You',
                     style: GoogleFonts.bebasNeue(fontSize: 54),
@@ -64,15 +63,13 @@ class SignUpPageState extends State<SignUpPage> {
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12)
-                      ),
+                          borderRadius: BorderRadius.circular(12)),
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20.0),
+                        padding: const EdgeInsets.only(left: 20.0),
                         child: TextField(
                           controller: _nameController,
-                          decoration: InputDecoration(
-                              border: InputBorder.none, hintText: 'Ad'
-                          ),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none, hintText: 'Ad'),
                         ),
                       ),
                     ),
@@ -84,15 +81,13 @@ class SignUpPageState extends State<SignUpPage> {
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12)
-                      ),
+                          borderRadius: BorderRadius.circular(12)),
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20.0),
+                        padding: const EdgeInsets.only(left: 20.0),
                         child: TextField(
                           controller: _surNameController,
-                          decoration: InputDecoration(
-                              border: InputBorder.none, hintText: 'Soyad'
-                          ),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none, hintText: 'Soyad'),
                         ),
                       ),
                     ),
@@ -104,64 +99,65 @@ class SignUpPageState extends State<SignUpPage> {
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12)
-                      ),
-                      child:  Padding(
-                        padding: EdgeInsets.only(left: 20.0),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (email) => email!=null &&!EmailValidator.validate(email)
-                              ?'"E-posta adresiniz doğru gözükmüyor':null,
+                          validator: (email) =>
+                              email != null && !EmailValidator.validate(email)
+                                  ? '"E-posta adresiniz doğru gözükmüyor'
+                                  : null,
                           controller: _emailController,
-                          decoration: InputDecoration(
-                              border: InputBorder.none, hintText: 'E-Posta Adresi'
-                          ),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'E-Posta Adresi'),
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 10),
 
-                 // Padding(
-              //      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                 //   child: Container(
-                 //     decoration: BoxDecoration(
-                 //         color: Colors.grey[200],
+                  // Padding(
+                  //      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //         color: Colors.grey[200],
                   //        border: Border.all(color: Colors.white),
-                 //         borderRadius: BorderRadius.circular(12)
-                 //     ),
-                 //     child:  Padding(
-                 //       padding: EdgeInsets.only(left: 20.0),
+                  //         borderRadius: BorderRadius.circular(12)
+                  //     ),
+                  //     child:  Padding(
+                  //       padding: EdgeInsets.only(left: 20.0),
                   //      child: TextField(
-                 //         controller: _phoneController,
-                   //       decoration: InputDecoration(
-                 //             border: InputBorder.none, hintText: 'Telefon Numarası'
+                  //         controller: _phoneController,
+                  //       decoration: InputDecoration(
+                  //             border: InputBorder.none, hintText: 'Telefon Numarası'
                   //        ),
-                 //       ),
-                //      ),
-                //    ),
-               //   ),
+                  //       ),
+                  //      ),
+                  //    ),
+                  //   ),
 
-               //   const SizedBox(height: 10),
+                  //   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12)
-                      ),
-                      child:  Padding(
-                        padding: EdgeInsets.only(left: 20.0),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) => value!=null && value.length <6
-                              ?'"Şifreniz 6 karakterden küçük olamaz':null,
+                          validator: (value) =>
+                              value != null && value.length < 6
+                                  ? '"Şifreniz 6 karakterden küçük olamaz'
+                                  : null,
                           controller: _passwordController,
                           obscureText: true,
-                          decoration: InputDecoration(
-                              border: InputBorder.none, hintText: 'Şifre'
-                          ),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none, hintText: 'Şifre'),
                         ),
                       ),
                     ),
@@ -173,19 +169,20 @@ class SignUpPageState extends State<SignUpPage> {
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12)
-                      ),
-                      child:  Padding(
-                        padding: EdgeInsets.only(left: 20.0),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (password2) => password2!=null && password2!=_passwordController.text
-                              ?'"Şifreniz aynı olmalı':null,
+                          validator: (password2) => password2 != null &&
+                                  password2 != _passwordController.text
+                              ? '"Şifreniz aynı olmalı'
+                              : null,
                           controller: _password2Controller,
                           obscureText: true,
-                          decoration: InputDecoration(
-                              border: InputBorder.none, hintText: 'Şifre Doğrulama'
-                          ),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Şifre Doğrulama'),
                         ),
                       ),
                     ),
@@ -193,38 +190,49 @@ class SignUpPageState extends State<SignUpPage> {
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: IntlPhoneField(
-                    decoration: InputDecoration(
-                      labelText: 'Telefon Numarası',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.red),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0,top: 8.0,right: 8),
+                    child: IntlPhoneField(
+                      cursorColor: Colors.red,
+                      decoration: InputDecoration(
+                        counter:  const Offstage(),
+                        labelText: 'Telefon Numarası',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.red),
+                        ),
                       ),
+                      initialCountryCode: 'TR',
+                      onChanged: (phone) {
+                        phoneController = phone.completeNumber;
+                      },
                     ),
-                    initialCountryCode: 'TR',
-                    onChanged: (phone) {
-                      controller: _phoneController;
-                    },
+                  ),
                   ),
                   ),
                   const SizedBox(height: 10),
                   CheckboxListTile(
                     value: check1, //set variable for value
-                    onChanged: (bool? value){
+                    onChanged: (bool? value) {
                       setState(() {
                         check1 = value;
                       });
                     },
-                    title: Text('Kullanım koşullarını kabul ediyorum.',style: TextStyle(fontWeight: FontWeight.bold)),
+                    title: const Text('Kullanım koşullarını kabul ediyorum.',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(height: 10),
 
-
-
-                  InkWell(splashColor: Colors.red,
-                    onTap: () async {
+                  InkWell(
+                    splashColor: Colors.red,
+                    onTap: () {
                       final isValid = formKey.currentState!.validate();
-                      if(!isValid) {
+                      if (!isValid) {
                         Alert(
                           context: context,
                           type: AlertType.error,
@@ -232,20 +240,20 @@ class SignUpPageState extends State<SignUpPage> {
                           desc: "Bilgilerinizi tekrar kontrol ediniz...",
                           buttons: [
                             DialogButton(
-                              child: Text(
-                                "Tamam",
-                                style: TextStyle(color: Colors.white, fontSize: 20),
-                              ),
                               onPressed: () => Navigator.pop(context),
-                              gradient: LinearGradient(colors: [
+                              gradient: const LinearGradient(colors: [
                                 Color.fromRGBO(116, 116, 191, 1.0),
                                 Color.fromRGBO(52, 138, 199, 1.0)
                               ]),
+                              child: const Text(
+                                "Tamam",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
                             )
                           ],
                         ).show();
-                      }
-                      else if(check1==false){
+                      } else if (check1 == false) {
                         Alert(
                           context: context,
                           type: AlertType.error,
@@ -253,25 +261,32 @@ class SignUpPageState extends State<SignUpPage> {
                           desc: "Lütfen kullanım koşullarını kabul ediniz.",
                           buttons: [
                             DialogButton(
-                              child: Text(
-                                "Tamam",
-                                style: TextStyle(color: Colors.white, fontSize: 20),
-                              ),
                               onPressed: () => Navigator.pop(context),
-                              gradient: LinearGradient(colors: [
+                              gradient: const LinearGradient(colors: [
                                 Color.fromRGBO(116, 116, 191, 1.0),
                                 Color.fromRGBO(52, 138, 199, 1.0)
                               ]),
+                              child: const Text(
+                                "Tamam",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
                             )
                           ],
                         ).show();
+                      } else {
+                        authService.createEmailAndPassword(
+                            name: _nameController.text,
+                            surname: _surNameController.text,
+                            email: _emailController.text,
+                            phone: phoneController,
+                            password: _passwordController.text);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ));
                       }
-                      else{
-                        await  _authService.createEmailAndPassword(name:_nameController.text,surname:_surNameController.text,email: _emailController.text,phone:_phoneController.text, password: _passwordController.text);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage(),));
-
-                      }
-
                     },
                     // padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Container(
@@ -279,28 +294,36 @@ class SignUpPageState extends State<SignUpPage> {
                       height: 65,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(color: Colors.deepPurple,borderRadius: BorderRadius.circular(12)),
-                      child: const Center(child: Text('Üye Ol',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18),),
+                      decoration: BoxDecoration(
+                          color: Colors.deepPurple,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: const Center(
+                        child: Text(
+                          'Üye Ol',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
                       ),
                     ),
                   ),
 
-                //  Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
+                  //  Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
                   //    children: [
                   //     const Text('Henüz üye değil misiniz?',style: TextStyle(fontWeight: FontWeight.bold)),
-    //     TextButton(onPressed: (){
-    //      Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
-              //     },
-              //   child: const Text('Hemen Üye Ol',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),
-              //    ),
+                  //     TextButton(onPressed: (){
+                  //      Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
+                  //     },
+                  //   child: const Text('Hemen Üye Ol',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),
                   //    ),
-              //    ],
+                  //    ),
+                  //    ],
                   //    ),
                 ],
               ),
             ),
-
           ),
         ),
       ),

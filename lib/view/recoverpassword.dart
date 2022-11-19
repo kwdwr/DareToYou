@@ -1,8 +1,8 @@
-//import 'package:daretoyouapp/view/Uygulamaiciekran.dart';
+//import 'package:daretoyouapp/view/uygulamaiciekran.dart';
 import 'package:daretoyouapp/core/service/i_auth_service.dart';
-import 'package:daretoyouapp/view/LoginPage.dart';
+import 'package:daretoyouapp/view/loginpage.dart';
 //import 'package:daretoyouapp/view/recoverpassword.dart';
-//import 'package:daretoyouapp/view/Uygulamaiciekran.dart';
+//import 'package:daretoyouapp/view/uygulamaiciekran.dart';
 import 'package:flutter/material.dart';
 //import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,7 +24,7 @@ class RecoverPasswordState extends State<RecoverPassword> {
   final TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final _authService = Provider.of<IAuthService>(context,listen:false);
+    final authService = Provider.of<IAuthService>(context,listen:false);
 
     return Scaffold( backgroundColor: Colors.grey[300],
       body: SafeArea(
@@ -52,13 +52,13 @@ class RecoverPasswordState extends State<RecoverPassword> {
                           borderRadius: BorderRadius.circular(12)
                       ),
                       child:  Padding(
-                        padding: EdgeInsets.only(left: 20.0),
+                        padding: const EdgeInsets.only(left: 20.0),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (email) => email!=null &&!EmailValidator.validate(email)
                               ?'"E-posta adresiniz doğru gözükmüyor':null,
                           controller: _emailController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               border: InputBorder.none, hintText: 'E-Posta Adresi'
                           ),
                         ),
@@ -67,12 +67,12 @@ class RecoverPasswordState extends State<RecoverPassword> {
                   ),
                   const SizedBox(height: 10),
                   InkWell(splashColor: Colors.red,
-                    onTap: () async {
+                    onTap: ()  {
                       final isValid = formKey.currentState!.validate();
                       if(!isValid) {
                       }
                       else{
-                        await  _authService.RecoverPassword(email: _emailController.text,);
+                          authService.RecoverPassword(email: _emailController.text,);
                     //    Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
                         Alert(
                           context: context,
@@ -81,15 +81,15 @@ class RecoverPasswordState extends State<RecoverPassword> {
                           desc: "Şifre Sıfırlama bağlantınız E-posta adresinize gönderilmiştir.",
                           buttons: [
                             DialogButton(
-                              child: Text(
-                                "Tamam",
-                                style: TextStyle(color: Colors.white, fontSize: 20),
-                              ),
                               onPressed: () => Navigator.pop(context, MaterialPageRoute(builder: (context) => const LoginPage(),)),
-                              gradient: LinearGradient(colors: [
+                              gradient: const LinearGradient(colors: [
                                 Color.fromRGBO(116, 116, 191, 1.0),
                                 Color.fromRGBO(52, 138, 199, 1.0)
                               ]),
+                              child: const Text(
+                                "Tamam",
+                                style: TextStyle(color: Colors.white, fontSize: 20),
+                              ),
                             )
                           ],
                         ).show();

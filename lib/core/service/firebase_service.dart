@@ -15,7 +15,6 @@ MyappUser _getUser(User? user){
   return MyappUser(userId: user!.uid, userMail: user.email!);
 }
 
-
 @override
   Future<MyappUser> createEmailAndPassword({required name,required surname,required String email,required phone, required String password}) async {
   var _tempUser = await _authInstance.createUserWithEmailAndPassword(

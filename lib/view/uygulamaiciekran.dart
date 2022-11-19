@@ -1,5 +1,5 @@
 import 'package:daretoyouapp/core/service/i_auth_service.dart';
-import 'package:daretoyouapp/view/LoginPage.dart';
+import 'package:daretoyouapp/view/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,11 +9,10 @@ class Uygulamaiciekran extends StatefulWidget {
   @override
   State<Uygulamaiciekran> createState() => UygulamaiciekranState();
 }
-
 class UygulamaiciekranState extends State<Uygulamaiciekran> {
   @override
   Widget build(BuildContext context) {
-    final _authService = Provider.of<IAuthService>(context,listen: false);
+    final authService = Provider.of<IAuthService>(context,listen: false);
     return Scaffold( backgroundColor: Colors.blueGrey,
         body: SafeArea(
         child: Center(
@@ -30,8 +29,8 @@ class UygulamaiciekranState extends State<Uygulamaiciekran> {
                ),
              ),
              InkWell(splashColor: Colors.red,
-               onTap: () async {
-                await _authService.SignOut();
+               onTap: (){
+                authService.SignOut();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage(),));
                },
                // padding: const EdgeInsets.symmetric(horizontal: 25.0),

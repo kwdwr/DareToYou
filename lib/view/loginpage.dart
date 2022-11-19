@@ -1,11 +1,9 @@
-import 'package:daretoyouapp/view/SignupPage.dart';
+import 'package:daretoyouapp/view/signuppage.dart';
 import 'package:daretoyouapp/view/recoverpassword.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
-import 'Uygulamaiciekran.dart';
+import 'uygulamaiciekran.dart';
 import '../core/service/i_auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
 
-    final _authService = Provider.of<IAuthService>(context,listen:false);
+    final fbAuthService = Provider.of<IAuthService>(context,listen:false);
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
@@ -63,10 +61,10 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(12)
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
                         controller: _emailController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: InputBorder.none, hintText: 'E-mail '
                         ),
                       ),
@@ -83,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(12)
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
                         controller: _passwordController,
                         obscureText: true,
@@ -103,8 +101,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 5),
                 InkWell(splashColor: Colors.red,
-                  onTap: () async {
-                  await  _authService.signInEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+                  onTap: () {
+                   fbAuthService.signInEmailAndPassword(email: _emailController.text, password: _passwordController.text);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
                   },
                   // padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -138,5 +136,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+
   }
 }
