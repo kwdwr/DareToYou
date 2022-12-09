@@ -1,13 +1,7 @@
-//import 'package:daretoyouapp/view/uygulamaiciekran.dart';
 import 'package:daretoyouapp/core/service/i_auth_service.dart';
-import 'package:daretoyouapp/view/loginpage.dart';
-//import 'package:daretoyouapp/view/recoverpassword.dart';
-//import 'package:daretoyouapp/view/uygulamaiciekran.dart';
 import 'package:flutter/material.dart';
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-//import '../firebase_options.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -21,6 +15,9 @@ class RecoverPassword extends StatefulWidget {
 
 class RecoverPasswordState extends State<RecoverPassword> {
   final formKey = GlobalKey<FormState>();
+  late String title;
+  late String desc;
+  late AlertType type;
   final TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -71,32 +68,59 @@ class RecoverPasswordState extends State<RecoverPassword> {
                       final isValid = formKey.currentState!.validate();
                       if(!isValid) {
                       }
-                      else{
-                          authService.RecoverPassword(email: _emailController.text,);
-                    //    Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
-                        Alert(
-                          context: context,
-                          type: AlertType.success,
-                          title: "Şifre Sıfırlama",
-                          desc: "Şifre Sıfırlama bağlantınız E-posta adresinize gönderilmiştir.",
-                          buttons: [
-                            DialogButton(
-                              onPressed: () => Navigator.pop(context, MaterialPageRoute(builder: (context) => const LoginPage(),)),
-                              gradient: const LinearGradient(colors: [
-                                Color.fromRGBO(116, 116, 191, 1.0),
-                                Color.fromRGBO(52, 138, 199, 1.0)
-                              ]),
-                              child: const Text(
-                                "Tamam",
-                                style: TextStyle(color: Colors.white, fontSize: 20),
-                              ),
-                            )
-                          ],
-                        ).show();
-                      }
-
+                      else {
+                          authService.RecoverPassword(email: _emailController
+                              .text).then((value) {
+                                title="Şifre Sıfırlama";
+                                desc="Şifre Sıfırlama bağlantınız E-posta adresinize gönderilmiştir.";
+                                type=AlertType.success;
+                            buildAlert(title,desc,type).show();
+                          }).catchError((e){
+                            if(e.code == 'user-not-found'){
+                              title ="Hata";
+                              desc="Bu E-posta adresine bağlı bir kullanıcı bulunamadı.";
+                              type=AlertType.error;
+                              buildAlert(title, desc, type).show();
+                            }
+                            else if(e.code=='unauthorized-continue-uri'){
+                              title ="Beklenmedik Hata 0001";
+                              desc="Lütfen destek ekibiyle iletişime geçiniz: yedek309@outlook.com";
+                              type=AlertType.error;
+                              buildAlert(title, desc, type).show();
+                            }
+                            else if(e.code=='invalid-continue-uri'){
+                              title ="Beklenmedik Hata 0002";
+                              desc="Lütfen destek ekibiyle iletişime geçiniz: yedek309@outlook.com";
+                              type=AlertType.error;
+                              buildAlert(title, desc, type).show();
+                            }
+                            else if(e.code=='missing-ios-bundle-id'){
+                              title ="Beklenmedik Hata 0003";
+                              desc="Lütfen destek ekibiyle iletişime geçiniz: yedek309@outlook.com";
+                              type=AlertType.error;
+                              buildAlert(title, desc, type).show();
+                            }
+                            else if(e.code=='missing-continue-uri'){
+                              title ="Beklenmedik Hata 0004";
+                              desc="Lütfen destek ekibiyle iletişime geçiniz: yedek309@outlook.com";
+                              type=AlertType.error;
+                              buildAlert(title, desc, type).show();
+                            }
+                            else if(e.code=='missing-android-pkg-name'){
+                              title ="Beklenmedik Hata 0005";
+                              desc="Lütfen destek ekibiyle iletişime geçiniz: yedek309@outlook.com";
+                              type=AlertType.error;
+                              buildAlert(title, desc, type).show();
+                            }
+                            else if(e.code=='invalid-email'){
+                              title ="Hata";
+                              desc="E-posta adresiniz doğru gözükmüyor. Lütfen tekrar kontrol ediniz.";
+                              type=AlertType.error;
+                              buildAlert(title, desc, type).show();
+                            }
+                          });
+                        }
                     },
-                    // padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Container(
                       width: 360,
                       height: 65,
@@ -116,5 +140,25 @@ class RecoverPasswordState extends State<RecoverPassword> {
         ),
       ),
     );
+
   }
+  Alert buildAlert(String title,String desc,var type)=>Alert(
+    context: context,
+    type: type,
+    title: title,
+    desc: desc,
+    buttons: [
+      DialogButton(
+        onPressed: () => Navigator.pop(context),
+        gradient: const LinearGradient(colors: [
+          Color.fromRGBO(116, 116, 191, 1.0),
+          Color.fromRGBO(52, 138, 199, 1.0)
+        ]),
+        child: const Text(
+          "Tamam",
+          style: TextStyle(
+              color: Colors.white, fontSize: 20),
+        ),
+      )
+    ],);
 }
