@@ -1,4 +1,3 @@
-import 'package:daretoyouapp/view/loginpage.dart';
 import 'package:daretoyouapp/core/service/i_auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,8 +20,11 @@ class SignUpPageState extends State<SignUpPage> {
   final TextEditingController _password2Controller = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _surNameController = TextEditingController();
-  late final String phoneController;
+  late String phoneController;
   bool? check1 = false;
+  late String title;
+  late String desc;
+  late AlertType type;
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<IAuthService>(context, listen: false);
@@ -57,41 +59,9 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: TextField(
-                          controller: _nameController,
-                          decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: 'Ad'),
-                        ),
-                      ),
-                    ),
-                  ),
+                  textBoxBuilder("Ad", _nameController),
                   const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: TextField(
-                          controller: _surNameController,
-                          decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: 'Soyad'),
-                        ),
-                      ),
-                    ),
-                  ),
+                  textBoxBuilder("Soyad", _surNameController),
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -117,28 +87,6 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-
-                  // Padding(
-                  //      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //         color: Colors.grey[200],
-                  //        border: Border.all(color: Colors.white),
-                  //         borderRadius: BorderRadius.circular(12)
-                  //     ),
-                  //     child:  Padding(
-                  //       padding: EdgeInsets.only(left: 20.0),
-                  //      child: TextField(
-                  //         controller: _phoneController,
-                  //       decoration: InputDecoration(
-                  //             border: InputBorder.none, hintText: 'Telefon Numarası'
-                  //        ),
-                  //       ),
-                  //      ),
-                  //    ),
-                  //   ),
-
-                  //   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Container(
@@ -280,12 +228,35 @@ class SignUpPageState extends State<SignUpPage> {
                             surname: _surNameController.text,
                             email: _emailController.text,
                             phone: phoneController,
-                            password: _passwordController.text);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ));
+                            password: _passwordController.text).then((value) {
+                          Navigator.pop(context);
+                        }).catchError((e){
+                          if(e.code == 'email-already-in-use'){
+                            title ="Hata";
+                            desc="Bu E-posta adresine bağlı bir hesap zaten var.";
+                            type=AlertType.error;
+                            buildAlert(title, desc, type).show();
+                          }
+                          else if(e.code == 'invalid-email'){
+                            title ="Hata";
+                            desc="Bu E-posta adresi doğru gözükmüyor.";
+                            type=AlertType.error;
+                            buildAlert(title, desc, type).show();
+                          }
+                          else if(e.code == 'operation-not-allowed'){
+                            title ="Hata 0006";
+                            desc="Lütfen destek ekibiyle iletişime geçiniz: yedek309@outlook.com";
+                            type=AlertType.error;
+                            buildAlert(title, desc, type).show();
+                          }
+                          else if(e.code == 'weak-password'){
+                            title ="Hata";
+                            desc="Şifreniz kolay gözüküyor. Lütfen en az 6 karakterli daha zor bir şifre seçiniz.";
+                            type=AlertType.error;
+                            buildAlert(title, desc, type).show();
+                          }
+                        });
+
                       }
                     },
                     // padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -308,19 +279,6 @@ class SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-
-                  //  Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //    children: [
-                  //     const Text('Henüz üye değil misiniz?',style: TextStyle(fontWeight: FontWeight.bold)),
-                  //     TextButton(onPressed: (){
-                  //      Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
-                  //     },
-                  //   child: const Text('Hemen Üye Ol',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),
-                  //    ),
-                  //    ),
-                  //    ],
-                  //    ),
                 ],
               ),
             ),
@@ -329,4 +287,41 @@ class SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+  Alert buildAlert(String title,String desc,var type)=>Alert(
+    context: context,
+    type: type,
+    title: title,
+    desc: desc,
+    buttons: [
+      DialogButton(
+        onPressed: () => Navigator.pop(context),
+        gradient: const LinearGradient(colors: [
+          Color.fromRGBO(116, 116, 191, 1.0),
+          Color.fromRGBO(52, 138, 199, 1.0)
+        ]),
+        child: const Text(
+          "Tamam",
+          style: TextStyle(
+              color: Colors.white, fontSize: 20),
+        ),
+      )
+    ],);
+  Padding textBoxBuilder(String label,TextEditingController controller)=> Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+    child: Container(
+      decoration: BoxDecoration(
+          color: Colors.grey[200],
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.circular(12)
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: TextField(
+          controller: controller,
+          decoration:  InputDecoration(
+            border: InputBorder.none, hintText: label,
+          ),
+        ),
+      ),
+    ),);
 }

@@ -3,6 +3,7 @@ import 'package:daretoyouapp/view/recoverpassword.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'uygulamaiciekran.dart';
 import '../core/service/i_auth_service.dart';
 
@@ -16,7 +17,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  late String title;
+  late String desc;
+  late AlertType type;
   @override
   void dispose() {
     _emailController.dispose();
@@ -52,46 +55,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12)
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                            border: InputBorder.none, hintText: 'E-mail '
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                textBoxBuilder("E-mail",_emailController,false),
                 const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12)
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                            border: InputBorder.none, hintText: 'Şifre'
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                textBoxBuilder("Şifre", _passwordController,true),
                 const SizedBox(height: 5),
                 TextButton(onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const RecoverPassword(),));
@@ -102,10 +68,50 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 5),
                 InkWell(splashColor: Colors.red,
                   onTap: () {
-                   fbAuthService.signInEmailAndPassword(email: _emailController.text, password: _passwordController.text);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
+                    if (_emailController.text != "" &&
+                        _passwordController.text != "") {
+                      fbAuthService.signInEmailAndPassword(
+                          email: _emailController.text,
+                          password: _passwordController.text).then((value) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Uygulamaiciekran(),));
+                      }).catchError((e) {
+                        if (e.code == 'invalid-email') {
+                          title = "Hatalı E-mail";
+                          desc =
+                          "E-mail adresiniz hatalı. Lütfen kontrol ediniz.";
+                          type = AlertType.error;
+                          buildAlert(title, desc, type).show();
+                        }
+                        else if (e.code == 'user-disabled') {
+                          title = "Yasaklı Kullanıcı";
+                          desc =
+                          "Bu kullanıcı sistemde yasaklanmıştır. Lütfen destek ekibi ile iletişime geçiniz. yedek309@outlook.com";
+                          type = AlertType.error;
+                          buildAlert(title, desc, type).show();
+                        }
+                        else if (e.code == 'user-not-found') {
+                          title = "Kullanıcı Bulunamadı";
+                          desc =
+                          "Bu E-posta adresine bağlı bir kullanıcı bulunamadı. Lütfen E-posta adresinizi kontrol ediniz.";
+                          type = AlertType.error;
+                          buildAlert(title, desc, type).show();
+                        }
+                        else if (e.code == 'wrong-password') {
+                          title = "Şifreniz Hatalı";
+                          desc =
+                          "Şifreniz hatalı. Lütfen tekrar deneyiniz. Eğer şifrenizi hatırlamıyor iseniz, Şifremi unuttum butonuna tıklayabilirsiniz.";
+                          type = AlertType.error;
+                          buildAlert(title, desc, type).show();
+                        }
+                      });
+                    }
+                    else{
+                      title = "Hata";
+                      desc = "Lütfen E-posta adresi ve şifrenizi giriniz.";
+                      type = AlertType.error;
+                      buildAlert(title, desc, type).show();
+                    }
                   },
-                  // padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
                     width: 360,
                     height: 65,
@@ -137,5 +143,44 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
 
+
   }
+  Padding textBoxBuilder(String label,TextEditingController controller,bool obsecure)=> Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+    child: Container(
+      decoration: BoxDecoration(
+          color: Colors.grey[200],
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.circular(12)
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0),
+        child: TextField(
+          controller: controller,
+          obscureText: obsecure,
+          decoration:  InputDecoration(
+              border: InputBorder.none, hintText: label,
+          ),
+        ),
+      ),
+    ),);
+  Alert buildAlert(String title,String desc,var type)=>Alert(
+    context: context,
+    type: type,
+    title: title,
+    desc: desc,
+    buttons: [
+      DialogButton(
+        onPressed: () => Navigator.pop(context),
+        gradient: const LinearGradient(colors: [
+          Color.fromRGBO(116, 116, 191, 1.0),
+          Color.fromRGBO(52, 138, 199, 1.0)
+        ]),
+        child: const Text(
+          "Tamam",
+          style: TextStyle(
+              color: Colors.white, fontSize: 20),
+        ),
+      )
+    ],);
 }

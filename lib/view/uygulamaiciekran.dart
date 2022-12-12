@@ -33,7 +33,6 @@ class UygulamaiciekranState extends State<Uygulamaiciekran> {
                 authService.SignOut();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage(),));
                },
-               // padding: const EdgeInsets.symmetric(horizontal: 25.0),
                child: Container(
                  width: 360,
                  height: 65,
