@@ -1,6 +1,7 @@
 import 'package:daretoyouapp/core/service/i_auth_service.dart';
 import 'package:daretoyouapp/view/loginpage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class Uygulamaiciekran extends StatefulWidget {
@@ -13,24 +14,38 @@ class UygulamaiciekranState extends State<Uygulamaiciekran> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<IAuthService>(context,listen: false);
-    return Scaffold( backgroundColor: Colors.blueGrey,
+    return Scaffold( backgroundColor: Colors.grey[300],
         body: SafeArea(
         child: Center(
         child: SingleChildScrollView(
          child: Column(
-           mainAxisAlignment: MainAxisAlignment.center,
            children: [
+           const Icon(Icons.flutter_dash,size: 75,),
+          const SizedBox(height: 25,),
+          Text(
+            'Dare To You',
+            style: GoogleFonts.bebasNeue(fontSize: 54),
+          ),
+          const SizedBox(height: 10),
+           Text(
+            'Hoşgeldin ${authService.getemail()}',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          const SizedBox(height: 50),
              const SizedBox(height: 10),
-             const Text(
-               'E-mail Doğrulanmamış!',
-               style: TextStyle(
+              Text(
+               authService.getemail(),
+               style: const TextStyle(
                  fontWeight: FontWeight.bold,
                  fontSize: 25,color: Colors.white
                ),
              ),
              InkWell(splashColor: Colors.red,
                onTap: (){
-                authService.SignOut();
+                authService.signOut();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage(),));
                },
                child: Container(

@@ -69,7 +69,7 @@ class RecoverPasswordState extends State<RecoverPassword> {
                       if(!isValid) {
                       }
                       else {
-                          authService.RecoverPassword(email: _emailController
+                          authService.recoverPassword(email: _emailController
                               .text).then((value) {
                                 title="Şifre Sıfırlama";
                                 desc="Şifre Sıfırlama bağlantınız E-posta adresinize gönderilmiştir.";

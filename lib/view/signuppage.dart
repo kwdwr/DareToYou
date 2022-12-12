@@ -228,9 +228,7 @@ class SignUpPageState extends State<SignUpPage> {
                             surname: _surNameController.text,
                             email: _emailController.text,
                             phone: phoneController,
-                            password: _passwordController.text).then((value) {
-                          Navigator.pop(context);
-                        }).catchError((e){
+                            password: _passwordController.text).catchError((e){
                           if(e.code == 'email-already-in-use'){
                             title ="Hata";
                             desc="Bu E-posta adresine bağlı bir hesap zaten var.";
