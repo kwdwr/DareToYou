@@ -43,7 +43,7 @@ class UygulamaiciekranState extends State<Uygulamaiciekran> {
 
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
-        backgroundColor: const Color(0xFFB64355),
+        backgroundColor: const Color(0xFFB44255),
         buttonBackgroundColor: const Color(0xFFBFA9E8),
         animationDuration: const Duration(milliseconds: 200),
         color: const Color(0xFF663AB7),

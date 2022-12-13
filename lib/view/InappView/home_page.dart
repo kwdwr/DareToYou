@@ -2,7 +2,6 @@ import 'package:daretoyouapp/view/InappView/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import '../../core/service/i_auth_service.dart';
 
 class Homepage extends StatefulWidget {
@@ -36,9 +35,6 @@ class HomepageState extends State<Homepage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                 //   Row(
-                 //     mainAxisAlignment: MainAxisAlignment.center,
-                    //  children: [
                         Icon(
                           Icons.flutter_dash,
                           size: 85,
@@ -50,8 +46,6 @@ class HomepageState extends State<Homepage> {
                           style: GoogleFonts.bebasNeue(
                               fontSize: 55, color: Colors.grey.shade300),
                         ),
-                   //   ],
-                   // ),
                     const SizedBox(height: 10),
                     Text(
                       'Hoşgeldin',
@@ -66,16 +60,6 @@ class HomepageState extends State<Homepage> {
                           fontSize: 25,
                           color: Colors.grey[300],
                         )),
-
-                    //   const SizedBox(height: 50),
-
-                    // Text(
-                    //    authService.getemail(),
-                    //    style: const TextStyle(
-                    //         fontWeight: FontWeight.bold,
-                    //        fontSize: 25,color: Colors.white
-                    //     ),
-                    //   ),
                     const SizedBox(height: 50),
                     InkWell(
                       splashColor: const Color(0xff0d3c54),

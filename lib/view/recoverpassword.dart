@@ -160,5 +160,6 @@ class RecoverPasswordState extends State<RecoverPassword> {
               color: Colors.white, fontSize: 20),
         ),
       )
-    ],);
+    ],
+  );
 }
